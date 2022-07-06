@@ -17,8 +17,8 @@ class Move(NamedTuple):
     label: str = ""
 
 
-BOARD_SIZE = 5
-SYMBOLS_FOR_LOOSE = 3
+BOARD_SIZE = 10
+SYMBOLS_FOR_LOOSE = 5
 DEFAULT_PLAYERS = (
     Player(name="Human being", label="X", color="blue"),
     Player(name="Computer", label="O", color="green"),
