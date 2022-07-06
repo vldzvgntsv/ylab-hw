@@ -17,8 +17,8 @@ class Move(NamedTuple):
     label: str = ""
 
 
-BOARD_SIZE = 10
-SYMBOLS_FOR_LOOSE = 5
+BOARD_SIZE = 5
+SYMBOLS_FOR_LOOSE = 3
 DEFAULT_PLAYERS = (
     Player(name="Human being", label="X", color="blue"),
     Player(name="Computer", label="O", color="green"),
@@ -185,12 +185,29 @@ class TicTacToeBoard(tk.Tk):
             self.ai_play()
 
     def ai_play(self):
-        empty_buttons = [button for button in self._cells if button.cget('text') == ""]
-        clicked_btn = random.choice(empty_buttons)
-        row, col = self._cells[clicked_btn]
+        row, col, clicked_btn = self.find_best_move()
         move = Move(row, col, self._game.current_player.label)
         if self._game.is_valid_move(move):
             self.process_move(clicked_btn, move)
+
+    def find_best_move(self):
+        empty_buttons = [button for button in self._cells if button.cget('text') == ""]
+        for i in range(len(empty_buttons)):
+            clicked_btn = random.choice(empty_buttons)
+            row, col = self._cells[clicked_btn]
+            self._game._current_moves[row][col] = Move(row, col, self._game.current_player.label)
+            for combo in self._game._winning_combos:
+                results = set(
+                    self._game._current_moves[n][m].label
+                    for n, m in combo
+                )
+                is_win = (len(results) == 1) and ("" not in results)
+                if is_win:
+                    break
+            self._game._current_moves[row][col] = Move(row, col, '')
+            if not is_win:
+                return row, col, clicked_btn
+        return row, col, clicked_btn
 
     def process_move(self, clicked_btn, move):
         self._update_button(clicked_btn)
