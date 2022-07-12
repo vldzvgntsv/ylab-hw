@@ -21,5 +21,6 @@ m = Movie('sw', [
     (datetime(2020, 1, 15), datetime(2020, 2, 7))
 ])
 
-for d in m.schedule():
-    print(d)
+if __name__ == '__main__':
+    for d in m.schedule():
+        print(d)

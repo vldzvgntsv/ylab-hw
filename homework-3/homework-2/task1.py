@@ -18,5 +18,6 @@ class CyclicIterator:
             return next(self.iterator)
 
 
-for i in CyclicIterator(Range3(5)):
-    print(i)
+if __name__ == '__main__':
+    for i in CyclicIterator(Range3(5)):
+        print(i)
